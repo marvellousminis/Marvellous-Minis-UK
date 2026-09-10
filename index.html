@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvellous Minis UK | Commissioned Warhammer 40,000 Painting</title>
+<meta name="description" content="Marvellous Minis UK — commissioned Warhammer 40,000 miniature painting, from tabletop armies to display pieces and Titans.">
+<style>
+:root{
+  --bg:#090b0d; --panel:#111519; --panel2:#171c20; --text:#f3f4f4;
+  --muted:#a8b0b5; --accent:#d7a84b; --accent2:#f0c86a; --line:#2a3035;
+  --max:1180px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Inter,Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.6}
+a{color:inherit;text-decoration:none}
+.container{width:min(var(--max),92%);margin:auto}
+header{position:fixed;top:0;left:0;right:0;z-index:20;background:rgba(9,11,13,.88);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,.08)}
+.nav{height:76px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.brand span{color:var(--accent)}
+nav{display:flex;gap:28px;font-size:.92rem;color:#d9dddf}
+nav a:hover{color:var(--accent2)}
+.btn{display:inline-block;padding:13px 20px;border:1px solid var(--accent);background:var(--accent);color:#111;font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:.78rem}
+.btn:hover{background:var(--accent2)}
+.btn.outline{background:transparent;color:var(--accent2)}
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;background:
+ linear-gradient(90deg,rgba(9,11,13,.98) 0%,rgba(9,11,13,.88) 42%,rgba(9,11,13,.35) 100%),
+ url('assets/titan-front.jpg') center 34%/cover no-repeat}
+.hero:after{content:"";position:absolute;inset:0;opacity:.12;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:50px 50px;mask-image:linear-gradient(to right,black,transparent)}
+.hero-content{position:relative;z-index:2;padding-top:80px;max-width:760px}
+.kicker{color:var(--accent2);font-weight:800;text-transform:uppercase;letter-spacing:.18em;font-size:.8rem;margin-bottom:18px}
+h1{font-size:clamp(3.2rem,8vw,7rem);line-height:.9;text-transform:uppercase;letter-spacing:-.05em;margin-bottom:25px}
+h1 span{color:var(--accent)}
+.hero p{font-size:1.15rem;color:#c6cccf;max-width:650px;margin-bottom:32px}
+.actions{display:flex;gap:14px;flex-wrap:wrap}
+.section{padding:100px 0}
+.section-head{display:flex;justify-content:space-between;gap:30px;align-items:end;margin-bottom:42px}
+.section h2{font-size:clamp(2rem,4vw,3.4rem);text-transform:uppercase;line-height:1}
+.section-head p{max-width:540px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);padding:28px}
+.card h3{margin:15px 0 8px;font-size:1.2rem}
+.card p{color:var(--muted);font-size:.95rem}
+.icon{font-size:2rem;color:var(--accent)}
+.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.gallery-item{aspect-ratio:1/1;background:
+ linear-gradient(135deg,#20272b,#0e1113);border:1px solid var(--line);
+display:flex;align-items:end;padding:18px;position:relative;overflow:hidden}
+.gallery-item:before{content:"YOUR MINIATURE PHOTO";position:absolute;inset:0;display:grid;place-items:center;color:#697176;font-weight:800;letter-spacing:.12em;font-size:.72rem}
+.gallery-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}.gallery-item:hover img{transform:scale(1.04)}
+.gallery-item div{position:relative;z-index:1;background:rgba(0,0,0,.75);padding:8px 11px;font-weight:800;text-transform:uppercase;font-size:.75rem}
+.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.price{background:var(--panel);border:1px solid var(--line);padding:32px}
+.price.featured{border-color:var(--accent);transform:translateY(-6px)}
+.price h3{text-transform:uppercase}
+.amount{font-size:2.4rem;font-weight:900;color:var(--accent);margin:14px 0}
+.price ul{list-style:none;color:var(--muted);margin:18px 0 25px}
+.price li{margin:8px 0}
+.price li:before{content:"✓";color:var(--accent);font-weight:900;margin-right:9px}
+.process{counter-reset:step}
+.process .card{position:relative;padding-top:65px}
+.process .card:before{counter-increment:step;content:counter(step);position:absolute;top:24px;left:28px;width:28px;height:28px;border:1px solid var(--accent);color:var(--accent);display:grid;place-items:center;font-weight:900}
+.cta{background:linear-gradient(135deg,#1b1811,#111519);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.cta-box{display:flex;justify-content:space-between;align-items:center;gap:30px}
+.cta p{color:var(--muted);max-width:650px;margin-top:10px}
+footer{padding:35px 0;color:#7f888d;font-size:.85rem}
+.footer{display:flex;justify-content:space-between;gap:20px}
+@media(max-width:800px){
+ nav{display:none}.grid,.gallery,.pricing{grid-template-columns:1fr}
+ .section{padding:75px 0}.section-head,.cta-box,.footer{display:block}
+ .section-head p{margin-top:18px}.price.featured{transform:none}
+}
+</style>
+  <script src="simple-edit.js"></script>
+</head>
+<body>
+  <!-- Most website content can be changed in simple-edit.js -->
+<header>
+  <div class="container nav">
+    <a class="brand" href="#top">Marvellous <span>Minis</span> UK</a>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#gallery">Portfolio</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#process">How It Works</a>
+      <a href="#contact">Contact</a>
+      <a href="https://www.instagram.com/marvelous40kminis/" target="_blank" rel="noopener">Instagram</a>
+    </nav>
+    <a class="btn" href="#contact">Get a Quote</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="container hero-content">
+    <div class="kicker">Commissioned Warhammer 40,000 Painting</div>
+    <h1>Bring Your<br><span>Miniatures</span><br>To Life.</h1>
+    <p>Professional miniature painting for collectors, gamers and hobbyists. From tabletop-ready armies to centrepiece models and massive Titans — painted to your brief and built to stand out.</p>
+    <div class="actions">
+      <a class="btn" href="#contact">Request a Commission</a>
+      <a class="btn outline" href="#gallery">View Portfolio</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="services">
+<div class="container">
+  <div class="section-head">
+    <h2>Painting<br>Services</h2>
+    <p>Whether you need a single character finished to display standard or an entire army ready for the tabletop, every commission is approached with care and attention to detail.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="icon">⚔</div><h3>Tabletop Standard</h3><p>Clean, durable and striking paint jobs designed to get your army onto the battlefield quickly without sacrificing the details that matter.</p></div>
+    <div class="card"><div class="icon">✦</div><h3>Display Standard</h3><p>Higher-detail commissions with additional shading, highlights, weathering and finishing work for models that deserve centre stage.</p></div>
+    <div class="card"><div class="icon">♜</div><h3>Titans & Centrepieces</h3><p>Large-scale projects including Knights, Titans and other centrepiece models, with custom schemes and extensive finishing available.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="gallery">
+<div class="container">
+  <div class="section-head">
+    <h2>Selected<br>Work</h2>
+    <p>A selection of commissioned work, photographed to show the finish from multiple angles. More projects can be added as your portfolio grows.</p>
+  </div>
+  <div class="gallery">
+    <div class="gallery-item"><img src="assets/titan-front.jpg" alt="Commissioned Warhammer 40,000 Titan, front view"><div>Legio Astorum Titan — Front</div></div>
+    <div class="gallery-item"><img src="assets/titan-rear.jpg" alt="Commissioned Warhammer 40,000 Titan, rear view"><div>Legio Astorum Titan — Rear</div></div>
+    <div class="gallery-item"><div>Space Marines</div></div>
+    <div class="gallery-item"><div>Imperial Knights</div></div>
+    <div class="gallery-item"><div>Character Models</div></div>
+    <div class="gallery-item"><div>Display Pieces</div></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="pricing">
+<div class="container">
+  <div class="section-head">
+    <h2>Commission<br>Levels</h2>
+    <p>Every model is different, so final pricing is quoted individually. These levels give you a starting point when deciding what finish you want.</p>
+  </div>
+  <div class="pricing">
+    <div class="price"><h3>Battle Ready</h3><div class="amount">From £25</div><ul><li>Clean basecoat</li><li>Shading & highlights</li><li>Details picked out</li><li>Simple basing</li></ul><a class="btn outline" href="#contact">Enquire</a></div>
+    <div class="price featured"><h3>Display</h3><div class="amount">From £60</div><ul><li>Enhanced colour work</li><li>Advanced shading</li><li>Edge highlights</li><li>Weathering & details</li><li>Premium basing</li></ul><a class="btn" href="#contact">Enquire</a></div>
+    <div class="price"><h3>Centre­piece</h3><div class="amount">Quoted</div><ul><li>Full bespoke scheme</li><li>High-detail finish</li><li>Advanced weathering</li><li>Custom basing</li><li>Titans & large models</li></ul><a class="btn outline" href="#contact">Enquire</a></div>
+  </div>
+</div>
+</section>
+
+<section class="section" id="process">
+<div class="container">
+  <div class="section-head"><h2>How It<br>Works</h2><p>A straightforward commission process designed to keep you informed from the initial idea through to the finished miniature.</p></div>
+  <div class="grid process">
+    <div class="card"><h3>Tell Me What You Want</h3><p>Send your model details, reference images, colour scheme and the level of finish you're looking for.</p></div>
+    <div class="card"><h3>Receive Your Quote</h3><p>You'll receive a clear estimate based on the model, condition, complexity and requested finish.</p></div>
+    <div class="card"><h3>Painting Begins</h3><p>Once the commission is agreed, your model is prepared, painted and finished to the agreed specification.</p></div>
+    <div class="card"><h3>Quality Check</h3><p>The finished miniature is carefully inspected before being photographed and prepared for return.</p></div>
+    <div class="card"><h3>Delivered Safely</h3><p>Your completed miniature is securely packaged for delivery, ready for the tabletop or display cabinet.</p></div>
+    <div class="card"><h3>Enjoy Your Mini</h3><p>Put your newly painted miniature on the battlefield, in the cabinet, or wherever it belongs.</p></div>
+  </div>
+</div>
+</section>
+
+<section class="section cta" id="contact">
+<div class="container cta-box">
+  <div><h2>Ready to commission<br>your next army?</h2><p>Tell me what you're working on and I'll provide a personalised quote. Include the model, quantity, desired finish and any reference images or colour schemes.</p></div>
+  <div class="actions">
+    <a class="btn" href="mailto:marvellousminisuk@gmail.com?subject=Marvellous%20Minis%20UK%20Commission%20Enquiry">Email for a Quote</a>
+    <a class="btn outline" href="https://www.instagram.com/marvelous40kminis/" target="_blank" rel="noopener">Follow on Instagram</a>
+  </div>
+</div>
+</section>
+</main>
+
+<footer>
+<div class="container footer">
+  <div>© 2026 Marvellous Minis UK. All rights reserved.</div>
+  <div>Commissioned miniature painting • UK</div>
+</div>
+</footer>
+</body>
+</html>

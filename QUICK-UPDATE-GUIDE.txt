@@ -1,0 +1,22 @@
+MARVELLOUS MINIS UK — QUICK UPDATE GUIDE
+
+Change words/prices/contact details:
+    Open content.js
+    Edit the relevant value
+    Save
+
+Add a portfolio image:
+    1. Put the image in images/
+    2. Open content.js
+    3. Copy a portfolio item
+    4. Change image, title and description
+    5. Save
+
+Example:
+{
+  image: "images/my-new-mini.jpg",
+  title: "My New Mini",
+  description: "A recent commission"
+}
+
+Keep your original ZIP as a backup.

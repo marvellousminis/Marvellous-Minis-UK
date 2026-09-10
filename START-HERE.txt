@@ -1,0 +1,19 @@
+MARVELLOUS MINIS UK — QUICK REFERENCE
+
+EDIT THIS:
+simple-edit.js
+
+PHOTOS GO HERE:
+images/
+
+CHANGE:
+- Email
+- Instagram
+- Homepage wording
+- About text
+- Commission text
+- Portfolio photos/names
+
+LEAVE ALONE:
+index.html
+everything below "DO NOT EDIT BELOW THIS LINE" in simple-edit.js
