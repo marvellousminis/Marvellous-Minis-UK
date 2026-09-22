@@ -197,9 +197,8 @@ function buildCookieChoice() {
     '<div class="container consent-inner">' +
       "<div>" +
         "<h3>Counting visits</h3>" +
-        "<p>I'd like to use Google Analytics to see how many people visit and which work gets " +
-        "looked at. Nothing is recorded unless you agree, and you can change your mind at any " +
-        "time using the link in the footer.</p>" +
+        "<p>I'd like to count visits with Google Analytics, to see which work gets looked at. " +
+        "Nothing is recorded unless you agree — and you can change that any time in the footer.</p>" +
       "</div>" +
       '<div class="choices">' +
         '<button class="btn js-accept" type="button">Accept</button>' +
