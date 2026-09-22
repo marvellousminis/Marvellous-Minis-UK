@@ -45,10 +45,11 @@ h1 span{color:var(--accent)}
 .card p{color:var(--muted);font-size:.95rem}
 .icon{font-size:2rem;color:var(--accent)}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-.gallery-item{aspect-ratio:1/1;background:
+.gallery-item{aspect-ratio:3/4;background:
  linear-gradient(135deg,#20272b,#0e1113);border:1px solid var(--line);
 display:flex;align-items:end;padding:18px;position:relative;overflow:hidden}
 .gallery-item:before{content:"YOUR MINIATURE PHOTO";position:absolute;inset:0;display:grid;place-items:center;color:#697176;font-weight:800;letter-spacing:.12em;font-size:.72rem}
+.gallery-item:has(img):before{content:none}
 .gallery-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}.gallery-item:hover img{transform:scale(1.04)}
 .gallery-item div{position:relative;z-index:1;background:rgba(0,0,0,.75);padding:8px 11px;font-weight:800;text-transform:uppercase;font-size:.75rem}
 .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
@@ -126,12 +127,19 @@ footer{padding:35px 0;color:#7f888d;font-size:.85rem}
     <p>A selection of commissioned work, photographed to show the finish from multiple angles. More projects can be added as your portfolio grows.</p>
   </div>
   <div class="gallery">
-    <div class="gallery-item"><img src="assets/titan-front.jpg" alt="Commissioned Warhammer 40,000 Titan, front view"><div>Legio Astorum Titan — Front</div></div>
-    <div class="gallery-item"><img src="assets/titan-rear.jpg" alt="Commissioned Warhammer 40,000 Titan, rear view"><div>Legio Astorum Titan — Rear</div></div>
-    <div class="gallery-item"><div>Space Marines</div></div>
-    <div class="gallery-item"><div>Imperial Knights</div></div>
-    <div class="gallery-item"><div>Character Models</div></div>
-    <div class="gallery-item"><div>Display Pieces</div></div>
+    <div class="gallery-item"><img src="assets/titan-front.jpg" width="998" height="1348" loading="lazy" alt="Commissioned Warhammer 40,000 Titan, front view"><div>Legio Astorum Titan — Front</div></div>
+    <div class="gallery-item"><img src="assets/titan-rear.jpg" width="997" height="1347" loading="lazy" alt="Commissioned Warhammer 40,000 Titan, rear view"><div>Legio Astorum Titan — Rear</div></div>
+    <div class="gallery-item"><img src="assets/knights-pair.webp" width="1200" height="1600" loading="lazy" alt="Pair of commissioned Imperial Knights in blue and gold house colours"><div>Imperial Knights — Pair</div></div>
+    <div class="gallery-item"><img src="assets/knight-01.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Imperial Knight in blue and gold, striding pose, three-quarter view"><div>Imperial Knight — Three-Quarter</div></div>
+    <div class="gallery-item"><img src="assets/knight-02.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Imperial Knight in blue and gold, front view with heraldry"><div>Imperial Knight — Front</div></div>
+    <div class="gallery-item"><img src="assets/knight-03.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Imperial Knight in blue and gold, head-on with battle cannon"><div>Imperial Knight — Head-On</div></div>
+    <div class="gallery-item"><img src="assets/knight-04.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Imperial Knight in blue and gold, side profile on scenic base"><div>Imperial Knight — Side</div></div>
+    <div class="gallery-item"><img src="assets/custodes-01.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Adeptus Custodes character in gold armour with red robes and power sword"><div>Custodes Character</div></div>
+    <div class="gallery-item"><img src="assets/custodes-02.webp" width="1200" height="1600" loading="lazy" alt="Close-up of commissioned Adeptus Custodes character showing gold armour detail"><div>Custodes Character — Detail</div></div>
+    <div class="gallery-item"><img src="assets/dreadnought-01.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Space Marine Dreadnought in dark green, rear three-quarter view"><div>Dreadnought — Rear</div></div>
+    <div class="gallery-item"><img src="assets/dreadnought-02.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Space Marine Dreadnought in dark green with assault cannon, front view"><div>Dreadnought — Front</div></div>
+    <div class="gallery-item"><img src="assets/chaplain-01.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Space Marine character in black armour with gold-topped banner"><div>Character Model — Front</div></div>
+    <div class="gallery-item"><img src="assets/chaplain-02.webp" width="1200" height="1600" loading="lazy" alt="Commissioned Space Marine character in black armour, rear view showing backpack detail"><div>Character Model — Rear</div></div>
   </div>
 </div>
 </section>
