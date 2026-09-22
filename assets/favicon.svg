@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Marvellous Minis UK">
+  <rect width="64" height="64" fill="#0a0c0e"/>
+  <g fill="none" stroke="#d7a84b" stroke-width="3" stroke-linecap="square">
+    <path d="M7 7h9M7 7v9"/>
+    <path d="M57 57h-9M57 57v-9"/>
+  </g>
+  <path d="M16 47V17h8l8 13 8-13h8v30h-7V29l-9 14-9-14v18z" fill="#d7a84b"/>
+</svg>
