@@ -36,7 +36,8 @@ nav a:hover{color:var(--accent2)}
 .hero-content{position:relative;z-index:2;padding-top:80px;max-width:760px}
 .hero-dots{position:absolute;z-index:3;bottom:32px;left:0;right:0;width:min(var(--max),92%);margin:auto;display:flex;gap:10px}
 .hero-dots button{width:38px;height:26px;padding:0;border:0;background:none;cursor:pointer;display:grid;align-items:center;-webkit-tap-highlight-color:transparent}
-.hero-dots button:before{content:"";display:block;height:4px;background:rgba(255,255,255,.26);transition:background .3s}
+/* These sit on top of the photo, so they need to survive a pale background. */
+.hero-dots button:before{content:"";display:block;height:4px;background:rgba(255,255,255,.5);box-shadow:0 1px 3px rgba(0,0,0,.65);transition:background .3s}
 .hero-dots button:hover:before{background:rgba(255,255,255,.55)}
 .hero-dots button[aria-current="true"]:before{background:var(--accent)}
 @media(prefers-reduced-motion:reduce){.hero-slide{transition:none}}
@@ -116,7 +117,12 @@ footer{padding:35px 0;color:#7f888d;font-size:.85rem}
  .kicker{font-size:.7rem;margin-bottom:14px}
  .hero p{font-size:1.02rem;margin-bottom:26px}
  .actions{flex-direction:column}.actions .btn{width:100%;text-align:center;padding:15px 18px}
- .hero-dots{bottom:12px;gap:8px}.hero-dots button{flex:1;width:auto;height:26px}
+ /* Darken the foot of the photo so the position markers always read,
+    whatever the photo behind them looks like. */
+ .hero-slides:after{content:"";position:absolute;left:0;right:0;bottom:0;height:110px;background:linear-gradient(transparent,rgba(6,8,9,.8));pointer-events:none}
+ .hero-dots{bottom:14px;gap:8px}
+ .hero-dots button{flex:1;width:auto;height:28px}
+ .hero-dots button:before{height:5px}
  .lightbox-prev,.lightbox-next{display:none}
  .lightbox-close{top:10px;right:10px}
  .lightbox-bar{flex-direction:column;gap:4px;padding:16px}
