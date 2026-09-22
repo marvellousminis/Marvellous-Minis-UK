@@ -12,7 +12,10 @@ const INSTAGRAM = "https://www.instagram.com/marvelous40kminis/";
 /*
 CHANGE YOUR WEBSITE WORDING HERE
 */
-const HERO_TITLE = "Marvellous Minis UK";
+// The big headline on the homepage. Put *stars* around a word to colour it
+// gold. Keep it short — this is a headline, not a sentence.
+// Don't repeat "Marvellous Minis UK" here: the logo above already says it.
+const HERO_TITLE = "Bring your *miniatures* to life.";
 const HERO_SUBTITLE = "Hand-painted miniatures, commissions & custom work.";
 
 const ABOUT_TEXT =
@@ -68,7 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (el) el.textContent = value;
   };
 
-  setText(".hero h1", HERO_TITLE);
+  // Renders *starred* words in the accent colour. Text is escaped first, so
+  // whatever is typed above stays plain text and can never break the page.
+  const heading = document.querySelector(".hero h1");
+  if (heading) {
+    heading.innerHTML = HERO_TITLE
+      .replace(/[&<>]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[ch]))
+      .replace(/\*([^*]+)\*/g, "<span>$1</span>");
+  }
   setText(".hero p", HERO_SUBTITLE);
   setText(".about p", ABOUT_TEXT);
   setText(".contact p", COMMISSION_TEXT);
@@ -160,7 +170,7 @@ async function buildHeroCarousel() {
     dot.addEventListener("click", () => show(i, true));
     dots.appendChild(dot);
   });
-  hero.appendChild(dots);
+  stage.appendChild(dots);
 
   const stillFrames = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let current = 0;
