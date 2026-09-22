@@ -2,7 +2,12 @@
 ========================================================
 MARVELLOUS MINIS UK — EDIT THIS FILE
 ========================================================
-You only need to edit the lines below.
+Everything you can change lives above the "DO NOT EDIT" line.
+Keep the quote marks and the commas where they are.
+
+A section with nothing in it simply doesn't appear on the site,
+so it is safe to leave a part empty until you're ready.
+
 
 CHANGE YOUR DETAILS
 */
@@ -10,24 +15,22 @@ const EMAIL = "marvellousminisuk@gmail.com";
 const INSTAGRAM = "https://www.instagram.com/marvelous40kminis/";
 
 /*
-CHANGE YOUR WEBSITE WORDING HERE
+THE BIG HEADLINE ON THE HOMEPAGE
+
+Put *stars* around a word to colour it gold. Keep it short — this is a
+headline, not a sentence. Don't repeat "Marvellous Minis UK" here: the
+logo above it already says that.
 */
-// The big headline on the homepage. Put *stars* around a word to colour it
-// gold. Keep it short — this is a headline, not a sentence.
-// Don't repeat "Marvellous Minis UK" here: the logo above already says it.
 const HERO_TITLE = "Bring your *miniatures* to life.";
-const HERO_SUBTITLE = "Hand-painted miniatures, commissions & custom work.";
-
-const ABOUT_TEXT =
-  "Passionate miniature painting and custom work, creating tabletop pieces with care and character.";
-
-const COMMISSION_TEXT =
-  "Have a miniature you'd like painted? Get in touch and tell me what you have in mind.";
+const HERO_SUBTITLE =
+  "Professional miniature painting for collectors, gamers and hobbyists. " +
+  "From tabletop-ready armies to centrepiece models and massive Titans — " +
+  "painted to your brief and built to stand out.";
 
 /*
 THE BIG SLIDESHOW AT THE TOP
 
-You do not normally edit this. To change the slideshow, just add or remove
+You do not normally edit this. To change the slideshow, add or remove
 photos in the assets/slideshow folder on github.com — see the README.txt
 in that folder. Everything else happens by itself.
 
@@ -45,19 +48,89 @@ const HERO_SECONDS_PER_SLIDE = 6;
 const HERO_FOLDER = "assets/slideshow/";
 
 /*
-ADD YOUR PORTFOLIO PHOTOS HERE
+THE FILTER BUTTONS ABOVE THE PORTFOLIO
 
-Put your photos in the images folder.
-Then copy a line and change the filename and name.
-
-Example:
-{ image: "images/my-mini.jpg", title: "My New Mini" },
+"tag" must match the data-tag on the photo in index.html.
+Delete a line to drop that button.
 */
-const PORTFOLIO = [
-  { image: "images/portfolio-1.jpg", title: "Featured Miniature 1" },
-  { image: "images/portfolio-2.jpg", title: "Featured Miniature 2" },
-  { image: "images/portfolio-3.jpg", title: "Featured Miniature 3" }
+const GALLERY_FILTERS = [
+  { tag: "all",        label: "All Work" },
+  { tag: "titans",     label: "Titans" },
+  { tag: "knights",    label: "Knights" },
+  { tag: "characters", label: "Characters" },
+  { tag: "walkers",    label: "Dreadnoughts" }
 ];
+
+/*
+ABOUT YOU
+
+Leave ABOUT_TEXT empty ("") to hide the whole About section.
+Each paragraph is its own line in the list.
+ABOUT_PHOTO is optional — put a photo in the assets folder and name it here.
+*/
+const ABOUT_TITLE = "About The Painter";
+const ABOUT_PHOTO = "";
+const ABOUT_TEXT = [
+  "Passionate miniature painting and custom work, creating tabletop pieces with care and character.",
+  "Every commission is painted personally, one model at a time, to the standard agreed before any brush touches plastic."
+];
+
+/*
+WHAT CLIENTS SAY
+
+Only add real quotes from real customers. An empty list hides the
+section completely, which is much better than inventing something.
+
+Copy this line to add one:
+  { quote: "What they said.", name: "Their name" },
+*/
+const TESTIMONIALS = [];
+
+/*
+COMMON QUESTIONS
+
+An empty list hides the section.
+
+IMPORTANT: check the answers below say what you actually do — especially
+turnaround time and payment. Change anything that isn't right.
+*/
+const FAQ = [
+  {
+    q: "How long does a commission take?",
+    a: "It depends on the model, the finish and how many jobs are ahead of yours. You'll get a realistic timescale with your quote, before you commit to anything."
+  },
+  {
+    q: "Do I send you the models?",
+    a: "Yes. Once we've agreed the commission I'll confirm where to post them and how to pack them safely."
+  },
+  {
+    q: "Do you assemble models as well as paint them?",
+    a: "Get in touch and ask. Assembly, and how it affects the quote, is agreed case by case before work starts."
+  },
+  {
+    q: "Can you match an existing army or a specific colour scheme?",
+    a: "Yes. Send reference photos of what you already have and the new models will be painted to match."
+  },
+  {
+    q: "How does payment work?",
+    a: "Payment terms are confirmed in writing with your quote, so you know the full cost before painting begins."
+  },
+  {
+    q: "What if I'm not happy with the result?",
+    a: "Tell me. The finish is agreed up front and photographed before return, so there are no surprises — and if something isn't right, we'll sort it."
+  }
+];
+
+/*
+THE CONTACT FORM
+
+Paste the web address of your contact Worker between the quotes to switch
+the form on. See worker/README.txt for how to set one up.
+
+Left empty, the form is hidden and visitors get the email link instead —
+so the site always works either way.
+*/
+const CONTACT_ENDPOINT = "";
 
 /*
 ========================================================
@@ -66,53 +139,100 @@ DO NOT EDIT BELOW THIS LINE
 */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const setText = (selector, value) => {
-    const el = document.querySelector(selector);
-    if (el) el.textContent = value;
-  };
+  applyWording();
+  stickyHeader();
+  buildMobileMenu();
+  buildHeroCarousel();
+  buildGalleryFilters();
+  buildLightbox();
+  buildAbout();
+  buildTestimonials();
+  buildFaq();
+  buildContactForm();
+  revealOnScroll();
+});
 
-  // Renders *starred* words in the accent colour. Text is escaped first, so
-  // whatever is typed above stays plain text and can never break the page.
+/* ---------- text and links ---------- */
+
+function escapeHtml(value) {
+  return String(value).replace(/[&<>"]/g, ch =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch])
+  );
+}
+
+function applyWording() {
+  // *Starred* words become gold. The text is escaped first, so whatever is
+  // typed at the top of this file stays plain text and can never break the page.
   const heading = document.querySelector(".hero h1");
   if (heading) {
-    heading.innerHTML = HERO_TITLE
-      .replace(/[&<>]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[ch]))
-      .replace(/\*([^*]+)\*/g, "<span>$1</span>");
+    heading.innerHTML = escapeHtml(HERO_TITLE).replace(/\*([^*]+)\*/g, "<span>$1</span>");
   }
-  setText(".hero p", HERO_SUBTITLE);
-  setText(".about p", ABOUT_TEXT);
-  setText(".contact p", COMMISSION_TEXT);
 
-  document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
-    a.href = `mailto:${EMAIL}?subject=Marvellous%20Minis%20UK%20Commission%20Enquiry`;
-  });
+  const sub = document.querySelector(".hero p");
+  if (sub) sub.textContent = HERO_SUBTITLE;
 
-  document.querySelectorAll('a[href*="instagram.com"]').forEach(a => {
-    a.href = INSTAGRAM;
-  });
+  const mailto = `mailto:${EMAIL}?subject=Marvellous%20Minis%20UK%20Commission%20Enquiry`;
+  document.querySelectorAll('a[href^="mailto:"]').forEach(a => { a.href = mailto; });
 
-  buildHeroCarousel();
-  buildLightbox();
-
-  const portfolioContainer =
-    document.querySelector(".portfolio-grid") ||
-    document.querySelector(".portfolio .grid");
-
-  if (portfolioContainer && PORTFOLIO.length) {
-    const existingCards = Array.from(portfolioContainer.children);
-    PORTFOLIO.forEach((item, i) => {
-      if (existingCards[i]) {
-        const img = existingCards[i].querySelector("img");
-        const title = existingCards[i].querySelector("h3, h2, .title");
-        if (img) {
-          img.src = item.image;
-          img.alt = item.title;
-        }
-        if (title) title.textContent = item.title;
-      }
-    });
+  const emailLink = document.querySelector(".contact-email");
+  if (emailLink) {
+    emailLink.href = mailto;
+    emailLink.textContent = EMAIL;
   }
-});
+
+  document.querySelectorAll('a[href*="instagram.com"]').forEach(a => { a.href = INSTAGRAM; });
+
+  const year = document.querySelector(".year");
+  if (year) year.textContent = new Date().getFullYear();
+}
+
+/* ---------- header condenses once you scroll ---------- */
+
+function stickyHeader() {
+  const bar = document.querySelector("header");
+  if (!bar) return;
+  let queued = false;
+
+  const update = () => {
+    queued = false;
+    bar.classList.toggle("stuck", window.scrollY > 60);
+  };
+
+  // Reading scrollY straight from the scroll event causes jank on long pages;
+  // one read per frame is plenty for a class toggle.
+  window.addEventListener("scroll", () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  }, { passive: true });
+
+  update();
+}
+
+/* ---------- mobile menu ---------- */
+
+function buildMobileMenu() {
+  const toggle = document.querySelector(".menu-toggle");
+  const nav = document.querySelector("#site-nav");
+  if (!toggle || !nav) return;
+
+  const setOpen = open => {
+    nav.classList.toggle("open", open);
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
+  };
+
+  toggle.addEventListener("click", () =>
+    setOpen(toggle.getAttribute("aria-expanded") !== "true")
+  );
+  nav.addEventListener("click", event => {
+    if (event.target.tagName === "A") setOpen(false);
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape") setOpen(false);
+  });
+}
+
+/* ---------- hero slideshow ---------- */
 
 // Reads the photos sitting in assets/slideshow. Falls back to HERO_SLIDES
 // if that folder is empty or the list has not been generated yet.
@@ -146,21 +266,29 @@ async function buildHeroCarousel() {
     img.src = item.image;
     img.alt = "";
     if (item.focus) img.style.objectPosition = "center " + item.focus;
-    if (i === 0) {
-      img.fetchPriority = "high";
-    } else {
-      img.loading = "lazy";
-    }
+    if (i === 0) img.fetchPriority = "high";
+    else img.loading = "lazy";
     stage.appendChild(img);
     return img;
   });
 
   if (slides.length < 2) return;
 
-  const dots = document.createElement("div");
-  dots.className = "hero-dots";
-  dots.setAttribute("role", "tablist");
-  dots.setAttribute("aria-label", "Featured work");
+  const arrow = d =>
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="${d}"/></svg>`;
+
+  const ui = document.createElement("div");
+  ui.className = "hero-ui";
+  ui.innerHTML =
+    '<div class="hero-dots" role="tablist" aria-label="Featured work"></div>' +
+    '<div class="hero-arrows">' +
+      '<button class="icon-btn js-prev" type="button" aria-label="Previous photo">' + arrow("M15 5l-7 7 7 7") + "</button>" +
+      '<button class="icon-btn js-pause" type="button" aria-label="Pause the slideshow"></button>' +
+      '<button class="icon-btn js-next" type="button" aria-label="Next photo">' + arrow("M9 5l7 7-7 7") + "</button>" +
+    "</div>";
+  stage.appendChild(ui);
+
+  const dots = ui.querySelector(".hero-dots");
   slides.forEach((_, i) => {
     const dot = document.createElement("button");
     dot.type = "button";
@@ -170,29 +298,36 @@ async function buildHeroCarousel() {
     dot.addEventListener("click", () => show(i, true));
     dots.appendChild(dot);
   });
-  stage.appendChild(dots);
+
+  const pauseBtn = ui.querySelector(".js-pause");
+  const ICON_PAUSE = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="7" y="5" width="3.4" height="14"/><rect x="13.6" y="5" width="3.4" height="14"/></svg>';
+  const ICON_PLAY = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5l11 7-11 7z"/></svg>';
 
   const stillFrames = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let current = 0;
   let timer = null;
+  // Someone who pressed pause meant it — hovering away must not restart it.
+  let paused = stillFrames;
 
-  function show(next, fromClick) {
+  function show(next, fromUser) {
     if (next === current) return;
     slides[current].classList.remove("is-active");
     slides[next].classList.add("is-active");
     dots.children[current].setAttribute("aria-current", "false");
     dots.children[next].setAttribute("aria-current", "true");
     current = next;
-    if (fromClick) start();
+    if (fromUser && !paused) start();
+  }
+
+  function step(delta) {
+    show((current + delta + slides.length) % slides.length, true);
   }
 
   function start() {
     stop();
-    if (stillFrames) return;
-    timer = setInterval(
-      () => show((current + 1) % slides.length),
-      Math.max(2, HERO_SECONDS_PER_SLIDE) * 1000
-    );
+    if (paused) return;
+    timer = setInterval(() => show((current + 1) % slides.length),
+      Math.max(2, HERO_SECONDS_PER_SLIDE) * 1000);
   }
 
   function stop() {
@@ -200,16 +335,24 @@ async function buildHeroCarousel() {
     timer = null;
   }
 
-  function step(delta) {
-    show((current + delta + slides.length) % slides.length, true);
+  function setPaused(value) {
+    paused = value;
+    pauseBtn.innerHTML = paused ? ICON_PLAY : ICON_PAUSE;
+    pauseBtn.setAttribute("aria-label", paused ? "Play the slideshow" : "Pause the slideshow");
+    if (paused) stop();
+    else start();
   }
 
+  pauseBtn.addEventListener("click", () => setPaused(!paused));
+  ui.querySelector(".js-prev").addEventListener("click", () => step(-1));
+  ui.querySelector(".js-next").addEventListener("click", () => step(1));
+
   hero.addEventListener("mouseenter", stop);
-  hero.addEventListener("mouseleave", start);
+  hero.addEventListener("mouseleave", () => { if (!paused) start(); });
   hero.addEventListener("focusin", stop);
-  hero.addEventListener("focusout", start);
+  hero.addEventListener("focusout", () => { if (!paused) start(); });
   document.addEventListener("visibilitychange", () =>
-    document.hidden ? stop() : start()
+    document.hidden ? stop() : (paused ? null : start())
   );
 
   dots.addEventListener("keydown", event => {
@@ -244,23 +387,221 @@ async function buildHeroCarousel() {
   }, { passive: true });
 
   hero.addEventListener("touchend", event => {
-    if (!tracking) {
-      start();
-      return;
-    }
+    if (!tracking) { if (!paused) start(); return; }
     tracking = false;
     const dx = event.changedTouches[0].clientX - startX;
     if (Math.abs(dx) >= SWIPE_MIN_PX) step(dx < 0 ? 1 : -1);
-    else start();
+    else if (!paused) start();
   }, { passive: true });
 
   hero.addEventListener("touchcancel", () => {
     tracking = false;
-    start();
+    if (!paused) start();
   }, { passive: true });
 
-  start();
+  setPaused(paused);
 }
+
+/* ---------- portfolio filters ---------- */
+
+function buildGalleryFilters() {
+  const bar = document.querySelector(".filters");
+  const items = [...document.querySelectorAll(".gallery-item")];
+  const empty = document.querySelector(".gallery-empty");
+  if (!bar || !items.length) return;
+
+  // Only offer a filter that actually has photos behind it.
+  const present = new Set(items.map(el => el.dataset.tag));
+  const usable = GALLERY_FILTERS.filter(f => f.tag === "all" || present.has(f.tag));
+  if (usable.length < 3) return;
+
+  usable.forEach((filter, i) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = filter.label;
+    button.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+    button.addEventListener("click", () => {
+      [...bar.children].forEach(b => b.setAttribute("aria-pressed", "false"));
+      button.setAttribute("aria-pressed", "true");
+      let shown = 0;
+      items.forEach(item => {
+        const match = filter.tag === "all" || item.dataset.tag === filter.tag;
+        item.hidden = !match;
+        if (match) shown++;
+      });
+      if (empty) empty.hidden = shown > 0;
+    });
+    bar.appendChild(button);
+  });
+}
+
+/* ---------- about, testimonials, questions ---------- */
+
+function buildAbout() {
+  const section = document.querySelector("#about");
+  if (!section) return;
+  const paragraphs = ABOUT_TEXT.filter(line => line && line.trim());
+  if (!paragraphs.length) return;
+
+  section.querySelector(".about-title").textContent = ABOUT_TITLE;
+  const body = section.querySelector(".about-body");
+  paragraphs.forEach(line => {
+    const p = document.createElement("p");
+    p.textContent = line;
+    body.appendChild(p);
+  });
+
+  if (ABOUT_PHOTO) {
+    const frame = section.querySelector(".about-photo");
+    const img = document.createElement("img");
+    img.src = ABOUT_PHOTO;
+    img.alt = "The painter at work";
+    img.loading = "lazy";
+    img.addEventListener("load", () => frame.querySelector(".ph").remove());
+    frame.appendChild(img);
+  }
+  section.hidden = false;
+}
+
+function buildTestimonials() {
+  const section = document.querySelector("#testimonials");
+  if (!section || !TESTIMONIALS.length) return;
+  const wrap = section.querySelector(".quotes");
+  TESTIMONIALS.forEach(item => {
+    if (!item.quote) return;
+    const block = document.createElement("blockquote");
+    block.className = "quote reveal";
+    block.innerHTML =
+      "<p>" + escapeHtml(item.quote) + "</p>" +
+      (item.name ? "<cite>" + escapeHtml(item.name) + "</cite>" : "");
+    wrap.appendChild(block);
+  });
+  if (wrap.children.length) section.hidden = false;
+}
+
+function buildFaq() {
+  const section = document.querySelector("#faq");
+  if (!section || !FAQ.length) return;
+  const wrap = section.querySelector(".faq");
+  FAQ.forEach(item => {
+    if (!item.q || !item.a) return;
+    const details = document.createElement("details");
+    details.innerHTML =
+      "<summary>" + escapeHtml(item.q) + "</summary>" +
+      '<div class="answer">' + escapeHtml(item.a) + "</div>";
+    wrap.appendChild(details);
+  });
+  if (wrap.children.length) section.hidden = false;
+}
+
+/* ---------- contact form ---------- */
+
+function buildContactForm() {
+  const form = document.querySelector(".contact-form");
+  if (!form) return;
+
+  // No endpoint configured yet: leave the form hidden and let the email
+  // link carry the enquiry, rather than showing a button that does nothing.
+  if (!CONTACT_ENDPOINT) {
+    const wrap = document.querySelector(".contact-wrap");
+    const aside = document.querySelector(".contact-aside");
+    if (wrap) wrap.classList.add("no-form");
+    if (aside) {
+      const button = document.createElement("a");
+      button.className = "btn";
+      button.href = `mailto:${EMAIL}?subject=Marvellous%20Minis%20UK%20Commission%20Enquiry`;
+      button.textContent = "Email for a Quote";
+      aside.insertBefore(button, aside.firstChild);
+    }
+    return;
+  }
+  form.hidden = false;
+
+  const status = form.querySelector(".form-status");
+  const submit = form.querySelector('button[type="submit"]');
+
+  const fieldOf = input => input.closest(".field");
+  const isValid = input => {
+    if (!input.value.trim()) return false;
+    if (input.type === "email") return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
+    return true;
+  };
+
+  const inputs = [...form.querySelectorAll("input[required],textarea[required]")];
+  inputs.forEach(input => {
+    // Validate once they've left the field, then live — never while first typing.
+    input.addEventListener("blur", () => fieldOf(input).classList.toggle("invalid", !isValid(input)));
+    input.addEventListener("input", () => {
+      if (fieldOf(input).classList.contains("invalid")) {
+        fieldOf(input).classList.toggle("invalid", !isValid(input));
+      }
+    });
+  });
+
+  const say = (message, kind) => {
+    status.textContent = message;
+    status.className = "form-status show " + kind;
+  };
+
+  form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const bad = inputs.filter(input => !isValid(input));
+    bad.forEach(input => fieldOf(input).classList.add("invalid"));
+    if (bad.length) {
+      say("Please check the highlighted fields.", "bad");
+      bad[0].focus();
+      return;
+    }
+
+    submit.disabled = true;
+    const original = submit.textContent;
+    submit.textContent = "Sending…";
+    say("Sending your enquiry…", "");
+
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(new FormData(form)))
+      });
+      if (!res.ok) throw new Error("status " + res.status);
+      form.reset();
+      say("Thank you — your enquiry is on its way. I'll reply by email.", "ok");
+    } catch (err) {
+      say("Sorry, that didn't send. Please email " + EMAIL + " instead.", "bad");
+    } finally {
+      submit.disabled = false;
+      submit.textContent = original;
+    }
+  });
+}
+
+/* ---------- gentle reveal as sections scroll in ---------- */
+
+function revealOnScroll() {
+  const targets = [...document.querySelectorAll(".reveal")];
+  if (!targets.length) return;
+
+  if (!("IntersectionObserver" in window) ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    targets.forEach(el => el.classList.add("shown"));
+    return;
+  }
+
+  const watcher = new IntersectionObserver((entries, self) => {
+    entries.forEach((entry, i) => {
+      if (!entry.isIntersecting) return;
+      // A short stagger reads as one movement rather than six separate ones.
+      setTimeout(() => entry.target.classList.add("shown"), i * 70);
+      self.unobserve(entry.target);
+    });
+  }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+
+  targets.forEach(el => watcher.observe(el));
+}
+
+/* ---------- full screen photo viewer ---------- */
 
 // Click a gallery photo to open it full screen, then zoom in on the detail.
 // Mouse: click or scroll to zoom, drag to move around.
@@ -283,6 +624,9 @@ function buildLightbox() {
     };
   });
 
+  const icon = d =>
+    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="${d}"/></svg>`;
+
   const box = document.createElement("div");
   box.className = "lightbox";
   box.setAttribute("role", "dialog");
@@ -291,14 +635,14 @@ function buildLightbox() {
   box.hidden = true;
   box.innerHTML =
     '<div class="lightbox-stage"><img alt=""></div>' +
-    '<button class="lightbox-btn lightbox-close" type="button" aria-label="Close">×</button>' +
-    '<button class="lightbox-btn lightbox-prev" type="button" aria-label="Previous photo">‹</button>' +
-    '<button class="lightbox-btn lightbox-next" type="button" aria-label="Next photo">›</button>' +
+    '<button class="lightbox-btn lightbox-close" type="button" aria-label="Close">' + icon("M6 6l12 12M18 6L6 18") + "</button>" +
+    '<button class="lightbox-btn lightbox-prev" type="button" aria-label="Previous photo">' + icon("M15 5l-7 7 7 7") + "</button>" +
+    '<button class="lightbox-btn lightbox-next" type="button" aria-label="Next photo">' + icon("M9 5l7 7-7 7") + "</button>" +
     '<div class="lightbox-bar">' +
       '<span class="lightbox-caption"></span>' +
       '<span class="lightbox-count"></span>' +
       '<span class="lightbox-hint"></span>' +
-    '</div>';
+    "</div>";
   document.body.appendChild(box);
 
   const stage = box.querySelector(".lightbox-stage");
@@ -359,14 +703,27 @@ function buildLightbox() {
     draw();
   }
 
+  // Skip over anything a portfolio filter is currently hiding.
+  function visibleOrder() {
+    return photos.map((_, i) => i).filter(i => !items[i].hidden);
+  }
+
+  function go(delta) {
+    const order = visibleOrder();
+    if (!order.length) return;
+    const at = order.indexOf(index);
+    load(order[(at + delta + order.length) % order.length]);
+  }
+
   function load(next) {
-    index = (next + photos.length) % photos.length;
+    index = next;
     const photo = photos[index];
+    const order = visibleOrder();
     img.onerror = () => { img.onerror = null; img.src = photo.thumb; };
     img.src = photo.full;
     img.alt = photo.alt;
     caption.textContent = photo.caption;
-    counter.textContent = index + 1 + " / " + photos.length;
+    counter.textContent = (order.indexOf(index) + 1) + " / " + order.length;
     reset();
   }
 
@@ -400,8 +757,8 @@ function buildLightbox() {
   });
 
   box.querySelector(".lightbox-close").addEventListener("click", close);
-  box.querySelector(".lightbox-prev").addEventListener("click", () => load(index - 1));
-  box.querySelector(".lightbox-next").addEventListener("click", () => load(index + 1));
+  box.querySelector(".lightbox-prev").addEventListener("click", () => go(-1));
+  box.querySelector(".lightbox-next").addEventListener("click", () => go(1));
 
   // Clicking the dark area around the photo closes; clicking the photo zooms.
   stage.addEventListener("click", event => {
@@ -413,8 +770,9 @@ function buildLightbox() {
   document.addEventListener("keydown", event => {
     if (box.hidden) return;
     if (event.key === "Escape") close();
-    else if (event.key === "ArrowLeft") load(index - 1);
-    else if (event.key === "ArrowRight") load(index + 1);
+    else if (event.key === "ArrowLeft") go(-1);
+    else if (event.key === "ArrowRight") go(1);
+    else if (event.key === "Tab") { event.preventDefault(); return; }
     else return;
     event.preventDefault();
   });
@@ -533,7 +891,7 @@ function buildLightbox() {
     }
 
     if (swiping && Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) {
-      load(index + (dx < 0 ? 1 : -1));
+      go(dx < 0 ? 1 : -1);
     }
     swiping = false;
   }, { passive: true });
