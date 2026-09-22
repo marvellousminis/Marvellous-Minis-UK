@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" role="img" aria-label="Concept sketch of a floating mechanical skull, standing in for a photo of the painter">
+  <title>Concept sketch placeholder</title>
+
+  <defs>
+    <!-- Faint squared paper, like a page out of a sketchbook -->
+    <pattern id="grid" width="25" height="25" patternUnits="userSpaceOnUse">
+      <path d="M25 0H0v25" fill="none" stroke="#1b2228" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="400" height="500" fill="#101418"/>
+  <rect width="400" height="500" fill="url(#grid)"/>
+
+  <!-- Everything below is nudged down so the drawing sits centred in the
+       sheet; the grid and corner marks stay put. -->
+  <g transform="translate(0,26)">
+
+  <!-- Construction lines: centre, brow, cheek, jaw -->
+  <g stroke="#2b343c" stroke-width="1" stroke-dasharray="5 6" fill="none">
+    <path d="M200 52v412"/>
+    <path d="M104 198h192"/>
+    <path d="M118 234h164"/>
+    <path d="M136 268h128"/>
+  </g>
+  <ellipse cx="200" cy="196" rx="86" ry="82" fill="none" stroke="#2b343c" stroke-width="1" stroke-dasharray="5 6"/>
+
+  <g fill="none" stroke="#a9853f" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
+    <!-- Cranium, temples, cheekbones, jaw. Faceted rather than smooth, so it
+         reads as something built, not something grown. -->
+    <path d="M200 122l-30 6-26 18-14 26-2 22 8 22 6 22 16 14h84l16-14 6-22 8-22-2-22-14-26-26-18z"/>
+    <path d="M144 146l24 20M256 146l-24 20" stroke-width="1.2"/>
+    <path d="M166 250h68l-6 20-28 8-28-8z" />
+    <!-- Brow ridge -->
+    <path d="M142 186c18-8 38-10 58-10s40 2 58 10" stroke-width="1.5"/>
+
+    <!-- Eye sockets -->
+    <path d="M152 198l32-6 8 24-16 16-24-10z"/>
+    <path d="M248 198l-32-6-8 24 16 16 24-10z"/>
+    <!-- Nasal cavity -->
+    <path d="M200 216l11 28h-22z"/>
+    <!-- Teeth -->
+    <path d="M172 252v16M186 252v18M200 252v18M214 252v18M228 252v16" stroke-width="1.5"/>
+    <path d="M168 262h64" stroke-width="1.5"/>
+
+    <!-- Bolted temple plates -->
+    <path d="M126 176l-16 6-2 34 16 10 10-8z"/>
+    <path d="M274 176l16 6 2 34-16 10-10-8z"/>
+    <circle cx="120" cy="196" r="3.5" stroke-width="1.5"/>
+    <circle cx="280" cy="196" r="3.5" stroke-width="1.5"/>
+
+    <!-- Optic replacing the left socket -->
+    <circle cx="169" cy="209" r="19"/>
+    <circle cx="169" cy="209" r="9" stroke-width="1.6"/>
+    <path d="M169 190v-14M150 209h-12" stroke-width="1.5"/>
+
+    <!-- Crown antenna -->
+    <path d="M200 124V92"/>
+    <path d="M188 98h24" stroke-width="1.6"/>
+    <circle cx="200" cy="86" r="4" stroke-width="1.6"/>
+
+    <!-- Suspensor housing and emitter -->
+    <path d="M182 288h36l6 18h-48z"/>
+    <path d="M200 278v10" stroke-width="1.6"/>
+    <ellipse cx="200" cy="316" rx="32" ry="8"/>
+
+    <!-- Cables hang and drift; mirroring them would read as a pair of
+         shoulders instead, so each one is a different length and curve. -->
+    <path d="M184 306c-14 16-8 34-20 48-9 11-8 24-4 34" stroke-width="1.7"/>
+    <path d="M216 306c10 14 6 26 16 38 7 9 8 18 6 26" stroke-width="1.5"/>
+    <path d="M202 308c4 24-6 40-2 58" stroke-width="1.2"/>
+    <circle cx="184" cy="306" r="2.6" stroke-width="1.2"/>
+    <circle cx="216" cy="306" r="2.6" stroke-width="1.2"/>
+  </g>
+
+  <!-- Antigrav wash: arcs, not rings, or it reads as a lampshade -->
+  <g fill="none" stroke="#6b5530" stroke-linecap="round">
+    <path d="M166 330a40 14 0 0 0 68 0" stroke-width="1.7" opacity=".85"/>
+    <path d="M152 348a54 16 0 0 0 96 0" stroke-width="1.4" opacity=".5"/>
+    <path d="M138 368a68 18 0 0 0 124 0" stroke-width="1.2" opacity=".25"/>
+    <path d="M200 324v16M176 326v11M224 326v11" stroke-width="1.2" opacity=".45"/>
+  </g>
+
+  </g>
+
+  <!-- Sheet marks, the way a working sketch gets annotated -->
+  <g stroke="#3a454e" stroke-width="1.4" fill="none">
+    <path d="M28 28h26M28 28v26"/>
+    <path d="M372 28h-26M372 28v26"/>
+    <path d="M28 472h26M28 472v-26"/>
+    <path d="M372 472h-26M372 472v-26"/>
+  </g>
+</svg>

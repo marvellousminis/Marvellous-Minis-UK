@@ -1,0 +1,15 @@
+FONTS USED ON THIS SITE
+=======================
+
+Oswald    — SIL Open Font License 1.1 — https://fonts.google.com/specimen/Oswald
+Barlow    — SIL Open Font License 1.1 — https://fonts.google.com/specimen/Barlow
+
+Both are free to use, modify and redistribute, including commercially,
+under the SIL Open Font License version 1.1:
+https://openfontlicense.org
+
+They are stored here rather than loaded from Google's servers so that no
+visitor data is sent to a third party, and so the site keeps working if
+that service is unavailable.
+
+Only the Latin character set is included, to keep the files small.
