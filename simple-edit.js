@@ -457,7 +457,10 @@ function buildAbout() {
     img.src = ABOUT_PHOTO;
     img.alt = "The painter at work";
     img.loading = "lazy";
-    img.addEventListener("load", () => frame.querySelector(".ph").remove());
+    // Only clear the stand-in once the real photo has actually arrived.
+    img.addEventListener("load", () => {
+      frame.querySelectorAll(".ph,.ph-art").forEach(el => el.remove());
+    });
     frame.appendChild(img);
   }
   section.hidden = false;
