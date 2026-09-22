@@ -47,3 +47,5 @@ turn into a blur. Use them further down the page instead.
 DON'T TOUCH
 -----------
 manifest.json — the website writes this one itself.
+
+Questions? Ask Michal.
