@@ -24,18 +24,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # heif-convert reads the .HEIC files iPhones produce; ImageMagick does
-      # the resizing and WebP encoding.
+      # heif-convert reads the .HEIC files iPhones produce, but only once the
+      # HEVC decoder plugin is present — without it every iPhone photo fails
+      # with "Unsupported codec". ffmpeg is the backup decoder.
       - name: Install image tools
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y -qq libheif-examples imagemagick jq
+          sudo apt-get install -y -qq libheif-plugin-libde265 || echo "decoder plugin unavailable, ffmpeg will cover HEIC"
 
       - name: Convert photos to WebP
         run: |
-          set -euo pipefail
+          set -uo pipefail
           mkdir -p assets/slideshow
           shopt -s nullglob nocaseglob
+
+          # Try the dedicated HEIC tool, then ffmpeg. A photo we cannot read
+          # is left alone and reported, rather than failing the whole run.
+          decode_to_png() {
+            heif-convert "$1" "$2" >/dev/null 2>&1 && [ -s "$2" ] && return 0
+            ffmpeg -y -loglevel error -i "$1" "$2" >/dev/null 2>&1 && [ -s "$2" ] && return 0
+            return 1
+          }
+
+          failed=0
 
           for src in assets/slideshow/*; do
             [ -f "$src" ] || continue
@@ -49,13 +61,22 @@ jobs:
             case "$ext" in
               heic|heif)
                 tmp="$(mktemp --suffix=.png)"
-                heif-convert "$src" "$tmp" >/dev/null
+                if ! decode_to_png "$src" "$tmp"; then
+                  echo "::warning::could not read $name — leaving it alone"
+                  rm -f "$tmp"
+                  failed=1
+                  continue
+                fi
                 convert "$tmp" -auto-orient -resize '1600x1600>' -quality 82 -strip "$out"
                 rm -f "$tmp" "$src"
                 echo "converted $name -> $(basename "$out")"
                 ;;
               jpg|jpeg|png|tif|tiff|bmp)
-                convert "$src" -auto-orient -resize '1600x1600>' -quality 82 -strip "$out"
+                if ! convert "$src" -auto-orient -resize '1600x1600>' -quality 82 -strip "$out"; then
+                  echo "::warning::could not read $name — leaving it alone"
+                  failed=1
+                  continue
+                fi
                 rm -f "$src"
                 echo "converted $name -> $(basename "$out")"
                 ;;
