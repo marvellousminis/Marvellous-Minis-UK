@@ -1,0 +1,101 @@
+# Whenever a photo is added to or removed from assets/slideshow/, this
+# converts it to a web-friendly WebP, shrinks it, and refreshes the list the
+# homepage slideshow reads. Nobody needs to touch any code.
+
+name: Prepare slideshow photos
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/slideshow/**'
+  workflow_dispatch:
+
+concurrency:
+  group: slideshow
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # heif-convert reads the .HEIC files iPhones produce; ImageMagick does
+      # the resizing and WebP encoding.
+      - name: Install image tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq libheif-examples imagemagick jq
+
+      - name: Convert photos to WebP
+        run: |
+          set -euo pipefail
+          mkdir -p assets/slideshow
+          shopt -s nullglob nocaseglob
+
+          for src in assets/slideshow/*; do
+            [ -f "$src" ] || continue
+            name="$(basename "$src")"
+            case "$name" in manifest.json|README.txt|.gitkeep) continue ;; esac
+
+            ext="${name##*.}"
+            ext="$(printf '%s' "$ext" | tr '[:upper:]' '[:lower:]')"
+            out="${src%.*}.webp"
+
+            case "$ext" in
+              heic|heif)
+                tmp="$(mktemp --suffix=.png)"
+                heif-convert "$src" "$tmp" >/dev/null
+                convert "$tmp" -auto-orient -resize '1600x1600>' -quality 82 -strip "$out"
+                rm -f "$tmp" "$src"
+                echo "converted $name -> $(basename "$out")"
+                ;;
+              jpg|jpeg|png|tif|tiff|bmp)
+                convert "$src" -auto-orient -resize '1600x1600>' -quality 82 -strip "$out"
+                rm -f "$src"
+                echo "converted $name -> $(basename "$out")"
+                ;;
+              webp)
+                # An upper-case .WEBP would be missed by the listing below.
+                if [ "$src" != "$out" ]; then
+                  mv "$src" "$out"
+                  src="$out"
+                  echo "renamed $name -> $(basename "$out")"
+                fi
+                # Re-encode only if it is larger than we serve.
+                width="$(identify -format '%w' "$src")"
+                height="$(identify -format '%h' "$src")"
+                if [ "$width" -gt 1600 ] || [ "$height" -gt 1600 ]; then
+                  convert "$src" -auto-orient -resize '1600x1600>' -quality 82 -strip "$src"
+                  echo "shrank $(basename "$src")"
+                fi
+                ;;
+              *)
+                echo "skipping unsupported file: $name"
+                ;;
+            esac
+          done
+
+      - name: Rebuild the slideshow list
+        run: |
+          set -euo pipefail
+          cd assets/slideshow
+          ls -1 *.webp 2>/dev/null | sort | jq -R . | jq -sc . > manifest.json
+          cat manifest.json
+
+      - name: Commit if anything changed
+        run: |
+          set -euo pipefail
+          if [ -z "$(git status --porcelain assets/slideshow)" ]; then
+            echo "nothing to do"
+            exit 0
+          fi
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -A assets/slideshow
+          git commit -m 'Prepare slideshow photos [skip ci]'
+          git push

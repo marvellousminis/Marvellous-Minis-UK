@@ -22,13 +22,13 @@ const COMMISSION_TEXT =
   "Have a miniature you'd like painted? Get in touch and tell me what you have in mind.";
 
 /*
-CHOOSE THE PHOTOS FOR THE BIG SLIDESHOW AT THE TOP
+THE BIG SLIDESHOW AT THE TOP
 
-Pick your best few shots. They rotate automatically.
-Add, remove or reorder lines — the slideshow follows this list.
+You do not normally edit this. To change the slideshow, just add or remove
+photos in the assets/slideshow folder on github.com — see the README.txt
+in that folder. Everything else happens by itself.
 
-"focus" moves the crop up or down: lower % shows more of the top of the
-photo, higher % shows more of the bottom. 34% suits most models.
+The list below is only a backup, used if that folder is ever empty.
 */
 const HERO_SLIDES = [
   { image: "assets/titan-front.jpg",     alt: "Commissioned Warhammer 40,000 Titan, front view", focus: "34%" },
@@ -39,6 +39,7 @@ const HERO_SLIDES = [
 ];
 
 const HERO_SECONDS_PER_SLIDE = 6;
+const HERO_FOLDER = "assets/slideshow/";
 
 /*
 ADD YOUR PORTFOLIO PHOTOS HERE
@@ -102,12 +103,33 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-function buildHeroCarousel() {
+// Reads the photos sitting in assets/slideshow. Falls back to HERO_SLIDES
+// if that folder is empty or the list has not been generated yet.
+async function chooseHeroSlides() {
+  try {
+    const res = await fetch(HERO_FOLDER + "manifest.json", { cache: "no-cache" });
+    if (!res.ok) return HERO_SLIDES;
+    const files = await res.json();
+    if (!Array.isArray(files) || !files.length) return HERO_SLIDES;
+    return files.map(file => ({
+      image: HERO_FOLDER + file,
+      alt: "Commissioned miniature painting by Marvellous Minis UK",
+      focus: "36%"
+    }));
+  } catch (err) {
+    return HERO_SLIDES;
+  }
+}
+
+async function buildHeroCarousel() {
   const hero = document.querySelector(".hero");
   const stage = document.querySelector(".hero-slides");
-  if (!hero || !stage || !HERO_SLIDES.length) return;
+  if (!hero || !stage) return;
 
-  const slides = HERO_SLIDES.map((item, i) => {
+  const chosen = await chooseHeroSlides();
+  if (!chosen.length) return;
+
+  const slides = chosen.map((item, i) => {
     const img = document.createElement("img");
     img.className = "hero-slide" + (i === 0 ? " is-active" : "");
     img.src = item.image;
@@ -167,6 +189,10 @@ function buildHeroCarousel() {
     timer = null;
   }
 
+  function step(delta) {
+    show((current + delta + slides.length) % slides.length, true);
+  }
+
   hero.addEventListener("mouseenter", stop);
   hero.addEventListener("mouseleave", start);
   hero.addEventListener("focusin", stop);
@@ -174,6 +200,53 @@ function buildHeroCarousel() {
   document.addEventListener("visibilitychange", () =>
     document.hidden ? stop() : start()
   );
+
+  dots.addEventListener("keydown", event => {
+    if (event.key === "ArrowLeft") step(-1);
+    else if (event.key === "ArrowRight") step(1);
+    else return;
+    event.preventDefault();
+    dots.children[current].focus();
+  });
+
+  // Swipe on phones and tablets. Listeners stay passive so vertical
+  // scrolling through the page is never blocked.
+  const SWIPE_MIN_PX = 40;
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  hero.addEventListener("touchstart", event => {
+    if (event.touches.length !== 1) return;
+    startX = event.touches[0].clientX;
+    startY = event.touches[0].clientY;
+    tracking = true;
+    stop();
+  }, { passive: true });
+
+  hero.addEventListener("touchmove", event => {
+    if (!tracking) return;
+    const dx = event.touches[0].clientX - startX;
+    const dy = event.touches[0].clientY - startY;
+    // Once the finger is clearly going up or down, it is a scroll, not a swipe.
+    if (Math.abs(dy) > Math.abs(dx)) tracking = false;
+  }, { passive: true });
+
+  hero.addEventListener("touchend", event => {
+    if (!tracking) {
+      start();
+      return;
+    }
+    tracking = false;
+    const dx = event.changedTouches[0].clientX - startX;
+    if (Math.abs(dx) >= SWIPE_MIN_PX) step(dx < 0 ? 1 : -1);
+    else start();
+  }, { passive: true });
+
+  hero.addEventListener("touchcancel", () => {
+    tracking = false;
+    start();
+  }, { passive: true });
 
   start();
 }
