@@ -8,6 +8,25 @@
 <meta name="theme-color" content="#0a0c0e">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<!-- Google tag (gtag.js). It loads on every page so the tag can be verified,
+     but every consent type starts denied: nothing is written to or read from
+     the visitor's device until they accept on the cookie bar, which is what
+     UK and EU rules require. The bar flips analytics_storage to granted. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-FYXKG3R11J"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied',
+    wait_for_update: 500
+  });
+  gtag('js', new Date());
+  gtag('config', 'G-FYXKG3R11J');
+</script>
+
 <link rel="preload" href="assets/fonts/oswald-var.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/barlow-400.woff2" as="font" type="font/woff2" crossorigin>
 <style>

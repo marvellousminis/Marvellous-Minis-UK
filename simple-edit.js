@@ -135,14 +135,14 @@ const CONTACT_ENDPOINT = "";
 /*
 VISITOR STATISTICS
 
-Your Google Analytics measurement ID. Empty ("") switches statistics off
-completely and hides the cookie bar with it.
+Set this to false to hide the cookie bar and leave statistics switched off
+for everyone. Leave it true for normal use.
 
-Analytics only starts after a visitor presses Accept on the cookie bar.
-That is not optional politeness — UK and EU rules treat analytics cookies
-as something people have to agree to first.
+Google Analytics is switched on at the top of index.html, because Google's
+own installation check has to be able to see the tag there. It records
+nothing until a visitor presses Accept on the cookie bar.
 */
-const GA_MEASUREMENT_ID = "G-FYXKG3R11J";
+const ANALYTICS_ENABLED = true;
 
 /*
 ========================================================
@@ -169,25 +169,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function buildCookieChoice() {
   const link = document.querySelector(".cookie-link");
-  if (!GA_MEASUREMENT_ID) {
+  if (!ANALYTICS_ENABLED || typeof window.gtag !== "function") {
     if (link) link.closest("div").textContent = "Commissioned miniature painting • UK";
     return;
   }
 
   const KEY = "mmuk-analytics-consent";
-  let started = false;
 
-  function startAnalytics() {
-    if (started) return;
-    started = true;
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function () { window.dataLayer.push(arguments); };
-    window.gtag("js", new Date());
-    window.gtag("config", GA_MEASUREMENT_ID);
-    const tag = document.createElement("script");
-    tag.async = true;
-    tag.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_MEASUREMENT_ID);
-    document.head.appendChild(tag);
+  // The tag is already loaded with everything denied; this is the switch that
+  // lets it actually remember anything.
+  function setConsent(granted) {
+    window.gtag("consent", "update", {
+      analytics_storage: granted ? "granted" : "denied"
+    });
   }
 
   const bar = document.createElement("section");
@@ -213,7 +207,7 @@ function buildCookieChoice() {
   function decide(answer) {
     try { localStorage.setItem(KEY, answer); } catch (err) { /* private mode */ }
     hide();
-    if (answer === "yes") startAnalytics();
+    setConsent(answer === "yes");
   }
 
   bar.querySelector(".js-accept").addEventListener("click", () => decide("yes"));
@@ -230,7 +224,7 @@ function buildCookieChoice() {
   try { saved = localStorage.getItem(KEY); } catch (err) { /* private mode */ }
 
   // Declining is remembered too, so nobody gets asked twice.
-  if (saved === "yes") startAnalytics();
+  if (saved === "yes") setConsent(true);
   else if (saved !== "no") setTimeout(show, 900);
 }
 
