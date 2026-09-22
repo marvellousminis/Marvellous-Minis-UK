@@ -60,6 +60,27 @@ display:flex;align-items:end;padding:18px;position:relative;overflow:hidden}
 .gallery-item:has(img):before{content:none}
 .gallery-item img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .45s ease}.gallery-item:hover img{transform:scale(1.04)}
 .gallery-item div{position:relative;z-index:1;background:rgba(0,0,0,.75);padding:8px 11px;font-weight:800;text-transform:uppercase;font-size:.75rem}
+.gallery-item{cursor:zoom-in}
+.lightbox{position:fixed;inset:0;z-index:60;background:#060809;touch-action:none;opacity:0;transition:opacity .2s ease}
+.lightbox[hidden]{display:none}
+.lightbox.is-open{opacity:1}
+/* Flex, not grid: a percentage max-height only resolves reliably against a
+   flex container with a definite height. */
+.lightbox-stage{position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.lightbox-stage img{max-width:100%;max-height:100%;width:auto;height:auto;min-width:0;min-height:0;display:block;transform-origin:center center;user-select:none;-webkit-user-drag:none;cursor:zoom-in}
+.lightbox.is-zoomed .lightbox-stage img{cursor:grab}
+.lightbox.is-panning .lightbox-stage img{cursor:grabbing;transition:none}
+.lightbox-btn{position:absolute;z-index:2;border:0;background:rgba(255,255,255,.1);color:#fff;cursor:pointer;display:grid;place-items:center;line-height:1;transition:background .2s;-webkit-tap-highlight-color:transparent}
+.lightbox-btn:hover{background:rgba(255,255,255,.22)}
+.lightbox-close{top:16px;right:16px;width:48px;height:48px;font-size:1.7rem}
+.lightbox-prev,.lightbox-next{top:50%;margin-top:-30px;width:52px;height:60px;font-size:2rem}
+.lightbox-prev{left:16px}.lightbox-next{right:16px}
+.lightbox-bar{position:absolute;z-index:2;left:0;right:0;bottom:0;padding:18px 20px;display:flex;justify-content:space-between;gap:16px;align-items:baseline;background:linear-gradient(transparent,rgba(6,8,9,.85));pointer-events:none}
+.lightbox-caption{font-weight:800;text-transform:uppercase;font-size:.8rem;letter-spacing:.04em}
+.lightbox-count{color:var(--muted);font-size:.8rem;white-space:nowrap}
+.lightbox-hint{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.1em}
+.lightbox.is-zoomed .lightbox-hint{display:none}
+body.no-scroll{overflow:hidden}
 .pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 .price{background:var(--panel);border:1px solid var(--line);padding:32px}
 .price.featured{border-color:var(--accent);transform:translateY(-6px)}
@@ -82,6 +103,9 @@ footer{padding:35px 0;color:#7f888d;font-size:.85rem}
  .hero:after{mask-image:none;opacity:.07}
  .hero-slide{object-position:center 30%}
  .hero-dots{bottom:20px;gap:8px}.hero-dots button{flex:1;width:auto;height:30px}
+ .lightbox-prev,.lightbox-next{display:none}
+ .lightbox-close{top:10px;right:10px}
+ .lightbox-bar{flex-direction:column;gap:4px;padding:16px}
  nav{display:none}.grid,.gallery,.pricing{grid-template-columns:1fr}
  .section{padding:75px 0}.section-head,.cta-box,.footer{display:block}
  .section-head p{margin-top:18px}.price.featured{transform:none}
