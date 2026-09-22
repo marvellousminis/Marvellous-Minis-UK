@@ -133,6 +133,18 @@ so the site always works either way.
 const CONTACT_ENDPOINT = "";
 
 /*
+VISITOR STATISTICS
+
+Your Google Analytics measurement ID. Empty ("") switches statistics off
+completely and hides the cookie bar with it.
+
+Analytics only starts after a visitor presses Accept on the cookie bar.
+That is not optional politeness — UK and EU rules treat analytics cookies
+as something people have to agree to first.
+*/
+const GA_MEASUREMENT_ID = "G-FYXKG3R11J";
+
+/*
 ========================================================
 DO NOT EDIT BELOW THIS LINE
 ========================================================
@@ -150,7 +162,78 @@ document.addEventListener("DOMContentLoaded", () => {
   buildFaq();
   buildContactForm();
   revealOnScroll();
+  buildCookieChoice();
 });
+
+/* ---------- visitor statistics, only once someone agrees ---------- */
+
+function buildCookieChoice() {
+  const link = document.querySelector(".cookie-link");
+  if (!GA_MEASUREMENT_ID) {
+    if (link) link.closest("div").textContent = "Commissioned miniature painting • UK";
+    return;
+  }
+
+  const KEY = "mmuk-analytics-consent";
+  let started = false;
+
+  function startAnalytics() {
+    if (started) return;
+    started = true;
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = function () { window.dataLayer.push(arguments); };
+    window.gtag("js", new Date());
+    window.gtag("config", GA_MEASUREMENT_ID);
+    const tag = document.createElement("script");
+    tag.async = true;
+    tag.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(GA_MEASUREMENT_ID);
+    document.head.appendChild(tag);
+  }
+
+  const bar = document.createElement("section");
+  bar.className = "consent";
+  bar.setAttribute("aria-label", "Cookie choice");
+  bar.innerHTML =
+    '<div class="container consent-inner">' +
+      "<div>" +
+        "<h3>Counting visits</h3>" +
+        "<p>I'd like to use Google Analytics to see how many people visit and which work gets " +
+        "looked at. Nothing is recorded unless you agree, and you can change your mind at any " +
+        "time using the link in the footer.</p>" +
+      "</div>" +
+      '<div class="choices">' +
+        '<button class="btn js-accept" type="button">Accept</button>' +
+        '<button class="btn outline js-decline" type="button">No thanks</button>' +
+      "</div>" +
+    "</div>";
+  document.body.appendChild(bar);
+
+  const show = () => requestAnimationFrame(() => bar.classList.add("show"));
+  const hide = () => bar.classList.remove("show");
+
+  function decide(answer) {
+    try { localStorage.setItem(KEY, answer); } catch (err) { /* private mode */ }
+    hide();
+    if (answer === "yes") startAnalytics();
+  }
+
+  bar.querySelector(".js-accept").addEventListener("click", () => decide("yes"));
+  bar.querySelector(".js-decline").addEventListener("click", () => decide("no"));
+
+  if (link) {
+    link.addEventListener("click", () => {
+      show();
+      bar.querySelector(".js-accept").focus();
+    });
+  }
+
+  let saved = null;
+  try { saved = localStorage.getItem(KEY); } catch (err) { /* private mode */ }
+
+  // Declining is remembered too, so nobody gets asked twice.
+  if (saved === "yes") startAnalytics();
+  else if (saved !== "no") setTimeout(show, 900);
+}
 
 /* ---------- text and links ---------- */
 

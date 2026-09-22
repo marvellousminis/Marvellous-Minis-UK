@@ -268,6 +268,24 @@ footer{padding:44px 0;color:var(--muted);font-size:.9rem}
 .lightbox.is-zoomed .lightbox-hint{display:none}
 body.no-scroll{overflow:hidden}
 
+/* ---- Cookie choice ---- */
+.consent{position:fixed;z-index:70;left:0;right:0;bottom:0;background:rgba(13,16,19,.97);
+ border-top:1px solid var(--line);backdrop-filter:blur(10px);padding:20px 0;
+ box-shadow:0 -14px 34px rgba(0,0,0,.45);transform:translateY(110%);transition:transform .35s ease}
+.consent.show{transform:none}
+.consent-inner{display:flex;gap:26px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.consent h3{font-size:.92rem;margin-bottom:6px}
+.consent p{color:var(--muted);font-size:.92rem;max-width:660px}
+.consent .choices{display:flex;gap:10px;flex-wrap:wrap}
+.consent .btn{min-height:44px;padding:12px 20px;font-size:.76rem}
+.cookie-link{background:none;border:0;padding:0;color:var(--muted);font:inherit;cursor:pointer;text-decoration:underline}
+.cookie-link:hover{color:var(--accent2)}
+@media(max-width:860px){
+ .consent-inner{display:block}
+ .consent .choices{margin-top:16px}
+ .consent .choices .btn{flex:1}
+}
+
 /* ---- Scroll reveal. Starts visible, so it degrades safely without JS. ---- */
 .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
 .js .reveal.shown{opacity:1;transform:none}
@@ -579,7 +597,7 @@ body.no-scroll{overflow:hidden}
 <footer>
   <div class="container footer">
     <div>© <span class="year">2026</span> Marvellous Minis UK. All rights reserved.</div>
-    <div>Commissioned miniature painting • UK</div>
+    <div>Commissioned miniature painting • UK · <button class="cookie-link" type="button">Cookie choice</button></div>
   </div>
 </footer>
 
