@@ -21,7 +21,7 @@ Put *stars* around a word to colour it gold. Keep it short — this is a
 headline, not a sentence. Don't repeat "Marvellous Minis UK" here: the
 logo above it already says that.
 */
-const HERO_TITLE = "Bring your *miniatures* to life.";
+const HERO_TITLE = "Professional miniature painting services";
 const HERO_SUBTITLE =
   "Professional miniature painting for collectors, gamers and hobbyists. " +
   "From tabletop-ready armies to centrepiece models and massive Titans — " +
